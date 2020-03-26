@@ -90,20 +90,6 @@ class ClickAndCollect extends Plugin
             ]);
         });
 
-        Event::on(ElementQuery::class, ElementQuery::EVENT_AFTER_POPULATE_ELEMENT, function(PopulateElementEvent $event) {
-            $element = $event->element;
-            if (get_class($element) == 'craft\commerce\elements\Order' && $element->shippingMethodHandle == $this->getSettings()->shippingMethodHandle) {
-                $request = Craft::$app->getRequest();
-                $element->attachBehavior('OrderBehavior', OrderBehavior::className());
-                $element->updateShippingAddress();
-                // check for request of updated selected store
-                if($selectedStore = $request->getParam($this->getSettings()->storeFieldHandle)){
-                    $element->setSelectedStore($selectedStore);
-                }
-                $element->save();
-            } 
-        });
-
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_TYPES, function(RegisterComponentTypesEvent $event) {
             $event->types[] = StoresField::class;
         });

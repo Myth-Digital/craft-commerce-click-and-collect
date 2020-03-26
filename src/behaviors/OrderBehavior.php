@@ -26,17 +26,6 @@ class OrderBehavior extends Behavior
         $this->owner->setFieldValue(ClickAndCollect::$plugin->getSettings()->storeFieldHandle, $selectedStore);
     }
 
-    public function updateShippingAddress($selectedStore = null) {
-        $this->owner->shippingAddressId = null;
-        // TODO: bypass Commerce\elements\Order validation and save Store's address as the orders shipping address
-        // if ($selectedStore) {
-        //     $store = ClickAndCollect::$plugin->clickAndCollectService->getStoreById($selectedStore);
-        //     if ($store) {
-        //         $this->owner->shippingAddressId = $store->addressId;
-        //     }
-        // }
-    }
-
     public function getSelectedStore() {
         $this->owner->getFieldValue(ClickAndCollect::$plugin->getSettings()->storeFieldHandle);
     }
