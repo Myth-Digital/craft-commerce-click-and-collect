@@ -12,6 +12,7 @@ use craft\commerce\base\Model;
 use craft\commerce\base\ShippingMethodInterface;
 use craft\commerce\elements\Order;
 use craft\commerce\errors\NotImplementedException;
+use mediabeastnz\ClickAndCollect\events\PickupMethodMatchOrderEvent;
 
 /**
  * Base ShippingMethod
@@ -21,6 +22,8 @@ use craft\commerce\errors\NotImplementedException;
  */
 class PickupMethod extends Model implements ShippingMethodInterface
 {
+    const EVENT_PICKUP_METHOD_MATCH_ORDER = 'pickupMethodMatchOrder';
+
     // Properties
     // =========================================================================
 
@@ -113,14 +116,14 @@ class PickupMethod extends Model implements ShippingMethodInterface
      */
     public function matchOrder(Order $order): bool
     {
-        // /** @var ShippingRuleInterface $rule */
-        // foreach ($this->getShippingRules() as $rule) {
-        //     if ($rule->matchOrder($order)) {
-        //         return true;
-        //     }
-        // }
+        // Raise the 'EVENT_PICKUP_METHOD_MATCH_ORDER' event
+        $event = new PickupMethodMatchOrderEvent([
+            'order' => $order
+        ]);
 
-        return true;
+        $this->trigger(self::EVENT_PICKUP_METHOD_MATCH_ORDER, $event);
+
+        return $event->isValid;
     }
 
     /**
