@@ -30,6 +30,30 @@ class StoresField extends Dropdown
     /**
      * @inheritdoc
      */
+    public function init()
+    {
+        parent::init();
+
+        // Normalize the options
+        $options = [];
+
+        $stores = ClickAndCollect::$plugin->clickAndCollectService->getAllStoresForField();
+        $options = [];
+        if ($stores) {
+            foreach ($stores as $option) {
+                $options[] = [
+                    'label' => $option['title'],
+                    'value' => $option['id']
+                ];
+            }
+        }
+
+        $this->options = $options;
+    }
+    
+    /**
+     * @inheritdoc
+     */
     public static function displayName(): string
     {
         return Craft::t('commerce', 'Click & Collect Stores');
