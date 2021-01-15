@@ -75,6 +75,10 @@ class StoresField extends Dropdown
         if (!($element instanceof craft\commerce\elements\Order)) {
             return '<span style="color: #da5a47">' . Craft::t('click-and-collect', 'Click & Collect Stores field is for CMS use only.') . '</span>';
         }
+        
+        if (empty($element->getShippingMethod()) {
+            return '<span style="color: #da5a47">' . Craft::t('click-and-collect', 'Orders shipping method is not currently set') . '</span>';
+        }
 
         if ($element->shippingMethodHandle != ClickAndCollect::$plugin->getSettings()->shippingMethodHandle) {
             return '<span style="color: #da5a47">' . Craft::t('click-and-collect', 'Orders shipping method is') . ' <strong>' . $element->getShippingMethod()->name . '</strong> ' . Craft::t('click-and-collect', "which isn't applicable to this field.") . '</span>';
